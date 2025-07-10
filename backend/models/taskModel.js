@@ -9,6 +9,9 @@ const taskSchema = mongoose.Schema({
   isDone: {
     type: Boolean,
   },
+  priority: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("task", taskSchema);

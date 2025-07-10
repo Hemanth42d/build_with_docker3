@@ -6,11 +6,13 @@ const TodoSection = () => {
       title: "Go to Gym",
       description: "Go to gym at 5:30 in the morning",
       priority: "high",
+      isDone: false,
     },
     {
-      title: "Go to Gym",
-      description: "Go to gym at 5:30 in the morning",
+      title: "Go to class",
+      description: "Go to 9:30 class in the morning",
       priority: "low",
+      isDone: false,
     },
   ];
   return (
