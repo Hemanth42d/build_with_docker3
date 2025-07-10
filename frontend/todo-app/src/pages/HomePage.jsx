@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import axiosInstance from "../utils/axiosInstance";
+import MainPage from "./MainPage";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -24,8 +25,13 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="bg-gray-200">
-        <NavBar logout={logout} />
+      <div className="pb-3">
+        <div className="h-[10vh]">
+          <NavBar logout={logout} />
+        </div>
+        <div className="h-[85vh] mt-3 w-[98vw] m-auto">
+          <MainPage />
+        </div>
       </div>
     </>
   );
