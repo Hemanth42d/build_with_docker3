@@ -17,8 +17,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("Login attempt with:", { email, password }); // Debug log
-
     if (!validateEmail(email)) {
       setError("Please enter valid email...");
       return;
@@ -33,8 +31,6 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log("Making request to:", `${import.meta.env.VITE_BASE_URL}/`); // Debug log
-
       const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/`,
         {

@@ -6,11 +6,19 @@ const taskSchema = mongoose.Schema({
     minLen: 5,
     required: true,
   },
+  description: {
+    type: String,
+  },
   isDone: {
     type: Boolean,
   },
   priority: {
     type: String,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
   },
 });
 

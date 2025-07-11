@@ -3,7 +3,6 @@ const taskModel = require("../models/taskModel");
 module.exports.addTodo = async (req, res) => {
   try {
     let { title, description, priority, isDone } = req.body;
-
     if (!title) {
       return res.status(400).json({
         error: true,
@@ -85,73 +84,3 @@ module.exports.deleteTask = async (req, res) => {
     });
   }
 };
-
-// module.exports.updateTask = async (req, res) => {
-//   const taskId = req.params.taskId;
-//   const { title, description, priority, isDone } = req.body;
-
-//   try {
-//     const task = await taskModel.findOne({
-//       _id: taskId,
-//       userId: req.user._id
-//     });
-
-//     if (!task) {
-//       return res.status(404).json({
-//         error: true,
-//         message: "Task not found"
-//       });
-//     }
-
-//     const updatedTask = await taskModel.findByIdAndUpdate(
-//       taskId,
-//       { title, description, priority, isDone },
-//       { new: true }
-//     );
-
-//     return res.status(200).json({
-//       error: false,
-//       task: updatedTask,
-//       message: "Task updated successfully",
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: true,
-//       message: error.message,
-//     });
-//   }
-// };
-
-// module.exports.toggleTaskStatus = async (req, res) => {
-//   const taskId = req.params.taskId;
-
-//   try {
-//     const task = await taskModel.findOne({
-//       _id: taskId,
-//       userId: req.user._id
-//     });
-
-//     if (!task) {
-//       return res.status(404).json({
-//         error: true,
-//         message: "Task not found"
-//       });
-//     }
-
-//     task.isDone = !task.isDone;
-//     await task.save();
-
-//     return res.status(200).json({
-//       error: false,
-//       task,
-//       message: `Task marked as ${task.isDone ? 'completed' : 'pending'}`,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: true,
-//       message: error.message,
-//     });
-//   }
-// };
