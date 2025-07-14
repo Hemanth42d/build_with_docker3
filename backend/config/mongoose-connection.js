@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(`${process.env.MONGODB_URI}/build_with_docker3`)
+  .connect(`${process.env.MONGODB_URI}`)
   .then(() => {
     console.log("DB connected");
   })
