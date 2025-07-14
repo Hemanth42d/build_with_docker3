@@ -56,7 +56,7 @@ module.exports.getAllTasks = async (req, res) => {
 
 module.exports.deleteTask = async (req, res) => {
   const taskId = req.params.taskId;
-
+  console.log(taskId);
   try {
     const task = await taskModel.findOne({
       _id: taskId,
@@ -75,6 +75,38 @@ module.exports.deleteTask = async (req, res) => {
     return res.status(200).json({
       error: false,
       message: "Task deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
+module.exports.toggleTaskStatus = async (req, res) => {
+  const taskId = req.params.taskId;
+
+  try {
+    const task = await taskModel.findOne({
+      _id: taskId,
+      userId: req.user._id,
+    });
+
+    if (!task) {
+      return res.status(404).json({
+        error: true,
+        message: "Task not found",
+      });
+    }
+    task.isDone = !task.isDone;
+    await task.save();
+
+    return res.status(200).json({
+      error: false,
+      task,
+      message: `Task marked as ${task.isDone ? "completed" : "pending"}`,
     });
   } catch (error) {
     console.log(error);

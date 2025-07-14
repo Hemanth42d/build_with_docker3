@@ -1,16 +1,60 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 
-const TodoInputsSection = ({
-  onTaskAdded,
-  createTask,
-  title,
-  description,
-  isDone,
-  priority,
-  isLoading,
-  error,
-}) => {
+const TodoInputsSection = ({ onTaskAdded }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("medium");
+  const [isDone, setIsDone] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const createTask = async (e) => {
+    e.preventDefault();
+
+    if (!title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    setError("");
+    setIsLoading(true);
+
+    try {
+      console.log(description);
+      const response = await axiosInstance.post(
+        `${import.meta.env.VITE_BASE_URL}/addTodo`,
+        {
+          title: title.trim(),
+          description,
+          priority,
+          isDone,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      // console.log("Task created:", response.data.task);
+      if (onTaskAdded) {
+        onTaskAdded(response.data.task);
+      }
+      setTitle("");
+      setDescription("");
+      setPriority("medium");
+      setIsDone(false);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to create task";
+      setError(errorMessage);
+      console.error("Error creating task:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center items-start pt-10 h-full w-full">

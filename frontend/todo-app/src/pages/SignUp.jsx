@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { validateEmail } from "../utils/helper";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -38,18 +39,18 @@ const SignUp = () => {
       let response = await axiosInstance.post("/signup", {
         email,
         password,
-        name: username, // Send as 'name' to match backend
+        name: username,
       });
-
       console.log(response.data);
-      // Navigate on successful signup
       if (response.data.user) {
+        toast.success("Sigup Successfull");
         navigate("/home");
       }
     } catch (error) {
       setError(
         error.response?.data?.message || error.message || "Signup failed"
       );
+      toast.error(error);
       console.log(error);
     } finally {
       setIsLoading(false);

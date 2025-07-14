@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { validateEmail } from "../utils/helper";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,6 +44,7 @@ const Login = () => {
       );
 
       if (response.data.user) {
+        toast.success("Login Successfull");
         navigate("/home");
       } else {
         setError("Login failed - no user data received");
@@ -54,6 +56,7 @@ const Login = () => {
         error.message ||
         "Login failed";
 
+      toast.error(errorMessage);
       setError(errorMessage);
     } finally {
       setIsLoading(false);

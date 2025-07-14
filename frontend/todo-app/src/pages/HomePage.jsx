@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import axiosInstance from "../utils/axiosInstance";
 import MainPage from "./MainPage";
+import { toast } from "react-toastify";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ const HomePage = () => {
       if (response.status === 200) {
         localStorage.removeItem("user");
         sessionStorage.clear();
+        toast.success("Logout successfull");
         navigate("/");
       }
     } catch (error) {
+      toast.error(error.message);
       console.log(error.message);
     }
   };

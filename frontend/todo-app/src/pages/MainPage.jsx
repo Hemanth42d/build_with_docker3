@@ -2,13 +2,9 @@ import TodoInputsSection from "../components/TodoInputsSection";
 import TodoSection from "../components/TodoSection";
 import axiosInstance from "../utils/axiosInstance";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const MainPage = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("medium");
-  const [isDone, setIsDone] = useState(false);
-
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,50 +29,51 @@ const MainPage = () => {
 
   const addTaskToState = (newTask) => {
     setTasks((prevTasks) => [newTask, ...prevTasks]);
+    toast.success("Task added successfully!");
   };
 
-  const createTask = async (e) => {
-    e.preventDefault();
-
-    if (!title.trim()) {
-      setError("Title is required");
-      return;
+  const deleteTaskFromState = async (taskId) => {
+    try {
+      await axiosInstance.delete(`/delete-task/${taskId}`);
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+      toast.success("Task deleted successfully!");
+      console.log("Task deleted successfully");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      toast.error("Failed to delete task");
+      setError("Failed to delete task");
     }
-
-    setError("");
-    setIsLoading(true);
+  };
+  const toggleTaskStatus = async (taskId) => {
+    const taskToToggle = tasks.find((task) => task._id === taskId);
 
     try {
-      console.log(description);
-      const response = await axiosInstance.post(
-        `${import.meta.env.VITE_BASE_URL}/addTodo`,
-        {
-          title: title.trim(),
-          description,
-          priority,
-          isDone,
-        },
-        {
-          withCredentials: true,
-        }
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, isDone: !task.isDone } : task
+        )
       );
-      // console.log("Task created:", response.data.task);
-      if (onTaskAdded) {
-        onTaskAdded(response.data.task);
+      const response = await axiosInstance.patch(`/toggle-task/${taskId}`);
+      console.log("Task toggled successfully:", response.data.message);
+      const newStatus = !taskToToggle.isDone;
+      toast.success(`Task marked as ${newStatus ? "completed" : "pending"}!`);
+      if (response.data.task) {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === taskId ? response.data.task : task
+          )
+        );
       }
-      setTitle("");
-      setDescription("");
-      setPriority("medium");
-      setIsDone(false);
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Failed to create task";
-      setError(errorMessage);
-      console.error("Error creating task:", error);
-    } finally {
-      setIsLoading(false);
+      console.error("Error toggling task:", error);
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, isDone: !task.isDone } : task
+        )
+      );
+
+      toast.error("Failed to update task");
+      setError("Failed to update task");
     }
   };
 
@@ -96,23 +93,25 @@ const MainPage = () => {
     <>
       <div className="h-full w-full bg-gray-100 flex justify-center items-center gap-1">
         <div className="w-1/4 h-full rounded-md">
-          <TodoInputsSection
-            onTaskAdded={addTaskToState}
-            createTask={createTask}
-            title={title}
-            description={description}
-            isDone={isDone}
-            priority={priority}
-            isLoading={isLoading}
-            error={error}
-          />
+          <TodoInputsSection onTaskAdded={addTaskToState} />
         </div>
         <div className="w-3/4 h-full bg-amber-100 rounded-md">
-          {error ? (
-            <div className="p-4 text-center text-red-500">{error}</div>
-          ) : (
-            <TodoSection data={tasks} />
+          {error && (
+            <div className="p-4 text-center text-red-500 mb-4">
+              {error}
+              <button
+                onClick={() => setError("")}
+                className="ml-2 text-blue-500 underline"
+              >
+                Dismiss
+              </button>
+            </div>
           )}
+          <TodoSection
+            data={tasks}
+            onDeleteTask={deleteTaskFromState}
+            onToggleTask={toggleTaskStatus}
+          />
         </div>
       </div>
     </>
