@@ -17,12 +17,14 @@ A Web Application using MERN stack for managing your tasks by creating them and 
 
 ---
 # Containerizing the application ( Using Docker ):
-  So in this repo we can also see the **docker-compose** file which can be used to run multiple build images.
-  So basically what we did in the compose file is
-    - Built an image for frontend
-    - Built an image for backend
-    - And Fetched mongo (db) and mongo-express (for ui interaction of mongodb) from Docker hub
-  Then we combined all this services and run as a compose file which can be seen in the **docker-compose.yaml** file in the repo.
+
+So in this repo we can also see the **docker-compose** file which can be used to run multiple build images.
+So basically what we did in the compose file is
+  - Built an image for frontend
+  - Built an image for backend
+  - And Fetched mongo (db) and mongo-express (for ui interaction of mongodb) from Docker hub
+  
+Then we combined all this services and run as a compose file which can be seen in the **docker-compose.yaml** file in the repo.
   
 ---
 
