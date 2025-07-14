@@ -84,12 +84,6 @@ const TodoSection = ({ data, onDeleteTask, onToggleTask }) => {
                       : "bg-gray-400 hover:bg-green-500 text-white"
                   }`}
                   onClick={() => {
-                    console.log(
-                      "Toggling task:",
-                      task._id,
-                      "Current status:",
-                      task.isDone
-                    );
                     onToggleTask(task._id);
                   }}
                 >

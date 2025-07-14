@@ -14,12 +14,8 @@ const MainPage = () => {
       setIsLoading(true);
       const response = await axiosInstance.get("/getAllTasks");
 
-      console.log("API Response:", response.data);
-      console.log("Tasks received:", response.data.tasks);
-
       setTasks(response.data.tasks || []);
     } catch (error) {
-      console.error("Error fetching tasks:", error);
       setError("Failed to fetch tasks");
       setTasks([]);
     } finally {
@@ -37,9 +33,7 @@ const MainPage = () => {
       await axiosInstance.delete(`/delete-task/${taskId}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
       toast.success("Task deleted successfully!");
-      console.log("Task deleted successfully");
     } catch (error) {
-      console.error("Error deleting task:", error);
       toast.error("Failed to delete task");
       setError("Failed to delete task");
     }
@@ -54,7 +48,6 @@ const MainPage = () => {
         )
       );
       const response = await axiosInstance.patch(`/toggle-task/${taskId}`);
-      console.log("Task toggled successfully:", response.data.message);
       const newStatus = !taskToToggle.isDone;
       toast.success(`Task marked as ${newStatus ? "completed" : "pending"}!`);
       if (response.data.task) {
@@ -65,7 +58,6 @@ const MainPage = () => {
         );
       }
     } catch (error) {
-      console.error("Error toggling task:", error);
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === taskId ? { ...task, isDone: !task.isDone } : task

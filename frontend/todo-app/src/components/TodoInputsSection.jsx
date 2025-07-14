@@ -22,7 +22,6 @@ const TodoInputsSection = ({ onTaskAdded }) => {
     setIsLoading(true);
 
     try {
-      console.log(description);
       const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/addTodo`,
         {
@@ -35,7 +34,6 @@ const TodoInputsSection = ({ onTaskAdded }) => {
           withCredentials: true,
         }
       );
-      // console.log("Task created:", response.data.task);
       if (onTaskAdded) {
         onTaskAdded(response.data.task);
       }
@@ -49,7 +47,6 @@ const TodoInputsSection = ({ onTaskAdded }) => {
         error.message ||
         "Failed to create task";
       setError(errorMessage);
-      console.error("Error creating task:", error);
     } finally {
       setIsLoading(false);
     }

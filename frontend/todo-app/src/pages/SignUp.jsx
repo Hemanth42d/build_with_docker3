@@ -41,7 +41,6 @@ const SignUp = () => {
         password,
         name: username,
       });
-      console.log(response.data);
       if (response.data.user) {
         toast.success("Sigup Successfull");
         navigate("/home");
@@ -51,7 +50,6 @@ const SignUp = () => {
         error.response?.data?.message || error.message || "Signup failed"
       );
       toast.error(error);
-      console.log(error);
     } finally {
       setIsLoading(false);
     }

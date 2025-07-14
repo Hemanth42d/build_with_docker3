@@ -24,7 +24,6 @@ module.exports.addTodo = async (req, res) => {
       message: "Task added successfully",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: true,
       message: error.message,
@@ -46,7 +45,6 @@ module.exports.getAllTasks = async (req, res) => {
       message: "All tasks retrieved successfully",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: true,
       message: error.message,
@@ -56,7 +54,6 @@ module.exports.getAllTasks = async (req, res) => {
 
 module.exports.deleteTask = async (req, res) => {
   const taskId = req.params.taskId;
-  console.log(taskId);
   try {
     const task = await taskModel.findOne({
       _id: taskId,
@@ -77,7 +74,6 @@ module.exports.deleteTask = async (req, res) => {
       message: "Task deleted successfully",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: true,
       message: error.message,
@@ -109,7 +105,6 @@ module.exports.toggleTaskStatus = async (req, res) => {
       message: `Task marked as ${task.isDone ? "completed" : "pending"}`,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: true,
       message: error.message,
