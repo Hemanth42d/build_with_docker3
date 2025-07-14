@@ -1,6 +1,6 @@
 services:
   frontend-app:
-    image: 763671683296.dkr.ecr.ap-south-1.amazonaws.com/frontend-todo-app:1.2
+    image: 763671683296.dkr.ecr.ap-south-1.amazonaws.com/frontend-todo-app:1.3
     ports:
       - "5173:5173"
     depends_on:
