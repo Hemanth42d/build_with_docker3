@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import LandingImage from "../assets/LandingImage.svg";
+import LandingImage from "../assets/landingImage.svg";
 
 const LandingPage = () => {
   const location = useLocation();

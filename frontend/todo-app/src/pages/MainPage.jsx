@@ -13,7 +13,7 @@ const MainPage = () => {
     try {
       setIsLoading(true);
       const response = await axiosInstance.get("/getAllTasks");
-
+      console.log(response.data);
       setTasks(response.data.tasks || []);
     } catch (error) {
       setError("Failed to fetch tasks");

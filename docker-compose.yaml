@@ -1,0 +1,37 @@
+services:
+  frontend-app:
+    image: 763671683296.dkr.ecr.ap-south-1.amazonaws.com/frontend-todo-app:1.2
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend-app
+  backend-app:
+    image: 763671683296.dkr.ecr.ap-south-1.amazonaws.com/backend-todo-app:1.1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/build_with_docker3?authSource=admin
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - db-data:/data/db
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+volumes:
+  db-data:
+    driver: local
